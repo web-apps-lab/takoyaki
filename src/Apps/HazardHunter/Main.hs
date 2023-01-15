@@ -366,9 +366,9 @@ renderSettings appStateV = do
     startButton appState =
       button_
         [ type_ "submit",
-          class_ $ withThemeBorderColor appState.settings.color "300" "p-1 border-4 border rounded"
+          class_ $ withThemeBorderColor appState.settings.color "300" "p-1 border-4 rounded"
         ]
-        $ div_ [class_ "px-6"] "Play"
+        $ div_ [class_ "px-6 font-bold"] "Play"
     levelButton :: MSLevel -> MSLevel -> Html ()
     levelButton selectedLevel level = do
       input_ $
