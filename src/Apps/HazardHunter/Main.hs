@@ -307,7 +307,7 @@ renderSmiley appStateV = do
   pure $
     div_ [id_ "MSSmiley"] $
       withEvent "play" [] $
-        div_ [class_ $ withThemeBorderColor appState.settings.color "300" "px-1 cursor-pointer border-2 rounded"] $
+        div_ [class_ $ withThemeBorderColor appState.settings.color "300" "px-1 cursor-pointer border-2 rounded whitespace-nowrap"] $
           ( case appState.state of
               Play _ _ -> "🤔"
               Wait -> "💤"
