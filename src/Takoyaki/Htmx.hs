@@ -1,5 +1,3 @@
-{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
-
 module Takoyaki.Htmx where
 
 import Data.Aeson as Aeson (FromJSON, Result (Error, Success), Value (Object, String), decode, fromJSON, (.:))
