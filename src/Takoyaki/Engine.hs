@@ -1,5 +1,6 @@
 module Takoyaki.Engine
   ( App (..),
+    AppDesc (..),
     runServer,
     WSEvent (..),
     withEvent,
@@ -44,8 +45,14 @@ import Prelude
 
 type Logger = String -> IO ()
 
-data App s se = App
+data AppDesc = AppDesc
   { appName :: Text,
+    appTitle :: Text,
+    appDescription :: Text
+  }
+
+data App s se = App
+  { appDesc :: AppDesc,
     appMkSessionState :: IO s,
     appInitDB :: DB.Connection -> IO (),
     appRender :: TVar s -> Logger -> DB.Connection -> IO (Html ()),
@@ -63,27 +70,27 @@ connectionHandler app storeV baseLogger (Just sessionUUID) conn = liftIO $ do
       Left _ -> newTVarIO =<< app.appMkSessionState
       Right prevState -> newTVarIO prevState
     serviceQ <- newTBQueueIO 1
-    appDom <- withAppDBConnection app.appName $ app.appRender state logger
+    appDom <- withDBConn $ app.appRender state logger
     WS.sendTextData conn . renderBS . div_ [id_ "init"] $ appDom
     Ki.scoped $ \scope -> do
       serviceT <- Ki.fork scope (app.appService state serviceQ conn logger)
       void $ handleEvents state serviceQ
       atomically $ Ki.await serviceT
   where
-    handleEvents stateV serviceQ = withAppDBConnection app.appName $
-      \dbConn -> forever $ do
-        msg <- WS.receiveDataMessage conn
-        case decodeWSEvent msg of
-          Nothing -> pure ()
-          Just wsEvent -> do
-            logger $ "Received WS event: " <> show wsEvent
-            withAppDBConnection app.appName (const $ pure ())
-            fragments <- app.appHandleEvent wsEvent stateV serviceQ dbConn logger
-            state <- readTVarIO stateV
-            void $ storeV.dumpSession sessionUUID state
-            mapM_ (WS.sendTextData conn . renderBS) fragments
+    handleEvents stateV serviceQ = withDBConn $ \dbConn -> forever $ do
+      msg <- WS.receiveDataMessage conn
+      case decodeWSEvent msg of
+        Nothing -> pure ()
+        Just wsEvent -> do
+          logger $ "Received WS event: " <> show wsEvent
+          withDBConn (const $ pure ())
+          fragments <- app.appHandleEvent wsEvent stateV serviceQ dbConn logger
+          state <- readTVarIO stateV
+          void $ storeV.dumpSession sessionUUID state
+          mapM_ (WS.sendTextData conn . renderBS) fragments
     logger :: String -> IO ()
     logger msg = baseLogger [i|[sessionUUID:#{sessionUUID}] #{msg}|]
+    withDBConn = withAppDBConnection app.appDesc.appName
 
 data SessionStore s = SessionStore
   { getSessionStorePath :: FilePath,
@@ -128,15 +135,16 @@ withAppDBConnection appName action = do
 withEvent :: TriggerId -> [Attribute] -> Html () -> Html ()
 withEvent tId tAttrs elm = with elm ([id_ tId, wsSend ""] <> tAttrs)
 
-bootHandler :: Text -> Logger -> Maybe Text -> Handler (Headers '[Header "Set-Cookie" SetCookie] (Html ()))
-bootHandler title _logger cookieHeaderM = do
+bootHandler :: AppDesc -> Logger -> Maybe Text -> Handler (Headers '[Header "Set-Cookie" SetCookie] (Html ()))
+bootHandler appDesc _logger cookieHeaderM = do
   sessionUUID <- case getSessionUUID of
     Just uuid -> pure uuid
     Nothing -> liftIO genUUID
   pure $ do
     withSetCookie sessionUUID $ doctypehtml_ $ do
       head_ $ do
-        title_ $ toHtml title
+        title_ $ toHtml appDesc.appTitle
+        meta_ [name_ "description", content_ appDesc.appDescription]
         meta_ [name_ "viewport", content_ "width=device-width, initial-scale=1.0"]
         xstaticScripts $ xStaticFiles <> [XStatic.tailwind]
       body_ $ do
@@ -178,20 +186,20 @@ type API =
 appServer :: App s se -> SessionStore s -> Logger -> Server API
 appServer app store logger =
   xstaticServant (xStaticFiles <> [XStatic.tailwind])
-    :<|> bootHandler app.appName logger
+    :<|> bootHandler app.appDesc logger
     :<|> connectionHandler app store logger
 
 runServer :: Serialise s => Int -> App s se -> IO ()
 runServer port app = do
   -- set the app Session store
-  sessionStore <- mkSessionStore app.appName
+  sessionStore <- mkSessionStore app.appDesc.appName
   -- init the app DB
-  void $ withAppDBConnection app.appName app.appInitDB
+  void $ withAppDBConnection app.appDesc.appName app.appInitDB
   -- build a logger for the app
   timeCache <- newTimeCache simpleTimeFormat
   (fastLogger, _) <- newTimedFastLogger timeCache $ LogStdout defaultBufSize
   let appLogger = appLogger' fastLogger
-  appLogger $ "Server starting on " <> show port <> " for app " <> from app.appName
+  appLogger $ "Server starting on " <> show port <> " for app " <> from app.appDesc.appName
   -- start the warp web app
   withStdoutLogger $ \warplogger -> do
     let settings = Warp.setPort port $ Warp.setLogger warplogger Warp.defaultSettings

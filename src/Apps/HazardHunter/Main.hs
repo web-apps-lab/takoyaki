@@ -31,7 +31,14 @@ hazardHunterApp :: IO (App MSState ServiceEvent)
 hazardHunterApp = do
   pure $
     App
-      { appName = "HazardHunter",
+      { appDesc =
+          AppDesc
+            "HazardHunter"
+            "HazardHunter - Minesweeper like game - Find Hazards and Enter leaderboard !"
+            ( "HazardHunter is a mini web game based on the legendary Minesweeper game's logic. "
+                <> "Goal is to discover various Hazards by guessing their places on the board. "
+                <> "Best scores are stored in the leaderboard !"
+            ),
         appMkSessionState,
         appInitDB,
         appRender = renderApp,

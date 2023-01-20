@@ -71,7 +71,7 @@ instance From TaskPrio Text where
 todoApp :: App TodoList ()
 todoApp =
   App
-    { appName = "Takoyaki Todo",
+    { appDesc = AppDesc "Todo" "A Todo Web App" "",
       appMkSessionState,
       appInitDB = const $ pure (),
       appRender = renderApp,
