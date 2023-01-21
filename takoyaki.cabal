@@ -38,6 +38,9 @@ library
                     , Apps.HazardHunter.Main
                     , Apps.HazardHunter.Engine
                     , Apps.HazardHunter.DB
+                    , Apps.Seed.Main
+                    , Apps.Seed.Engine
+                    , Apps.Seed.DB
     build-depends:    servant
                     , servant-lucid
                     , servant-server
