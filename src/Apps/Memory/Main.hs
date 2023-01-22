@@ -1,7 +1,7 @@
-module Apps.Seed.Main where
+module Apps.Memory.Main where
 
-import Apps.Seed.DB
-import Apps.Seed.Engine
+import Apps.Memory.DB
+import Apps.Memory.Engine
 import Control.Concurrent.STM
 import qualified Database.SQLite.Simple as DB
 import Lucid
@@ -15,7 +15,7 @@ seedApp :: IO (App AppState ServiceEvent)
 seedApp = do
   pure $
     App
-      { appDesc = AppDesc "Seed" "The Seed app" "",
+      { appDesc = AppDesc "Memery" "The Memory app" "",
         appMkSessionState = pure $ AppState "Hello App",
         appInitDB = initDB,
         appRender = renderApp,
@@ -39,7 +39,7 @@ renderApp appStateV _logger _dbConn = do
           div_ [class_ "bg-indigo-100"] $ do
             p_ $ toHtml appState.seed
           div_ [class_ "bg-red-100"] $ do
-            mapM_ (\_w -> p_ $ toHtml appState.seed) ([1 .. 100] :: [Int])
+            mapM_ (\_w -> p_ $ toHtml appState.seed) ([1 .. 10] :: [Int])
           div_ [class_ "bg-indigo-100"] $ do
             p_ $ toHtml appState.seed
 

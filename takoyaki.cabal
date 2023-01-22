@@ -38,6 +38,9 @@ library
                     , Apps.HazardHunter.Main
                     , Apps.HazardHunter.Engine
                     , Apps.HazardHunter.DB
+                    , Apps.Memory.Main
+                    , Apps.Memory.Engine
+                    , Apps.Memory.DB
                     , Apps.Seed.Main
                     , Apps.Seed.Engine
                     , Apps.Seed.DB

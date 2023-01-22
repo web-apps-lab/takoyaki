@@ -148,9 +148,7 @@ bootHandler appDesc _logger cookieHeaderM = do
         meta_ [name_ "viewport", content_ "width=device-width, initial-scale=1.0"]
         xstaticScripts $ xStaticFiles <> [XStatic.tailwind]
       body_ $ do
-        div_ [class_ "container mx-auto", hxExtWS, wsConnect $ wsPath sessionUUID] $
-          div_ [class_ "flex place-content-center"] $ do
-            div_ [id_ "init"] ""
+        div_ [hxExtWS, wsConnect $ wsPath sessionUUID] $ div_ [id_ "init"] ""
   where
     cookieName = "sessionUUID"
     wsPath :: UUID -> Text
