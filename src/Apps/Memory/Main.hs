@@ -39,7 +39,14 @@ renderApp appStateV _logger _dbConn = do
           div_ [class_ "bg-indigo-100"] $ do
             p_ $ toHtml appState.seed
           div_ [class_ "bg-red-100"] $ do
-            mapM_ (\_w -> p_ $ toHtml appState.seed) ([1 .. 10] :: [Int])
+            div_ [class_ "flex flex-row flex-wrap"] $ do
+              div_ [class_ "basis-1/2 min-w-fit grow bg-green-400"] $ do
+                div_ [class_ "m-2 grid grid-flow-row-dense gap-2 grid-cols-6 grid-rows-3"] $ do
+                  mapM_ (\_ -> div_ [class_ "w-14 h-14 shadow shadow-black bg-yellow-100 border-2 rounded border-pink-100"] "1") [1 .. 24]
+              div_ [class_ "basis-1/2 min-w-min grow bg-pink-400"] $ do
+                p_ "LeaderBoard"
+                p_ "Elsa"
+                p_ "Fabien"
           div_ [class_ "bg-indigo-100"] $ do
             p_ $ toHtml appState.seed
 
