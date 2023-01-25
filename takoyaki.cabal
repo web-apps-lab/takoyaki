@@ -53,6 +53,7 @@ library
                     , aeson
                     , async
                     , bytestring
+                    , base64-bytestring
                     , containers
                     , cookie
                     , lucid
@@ -60,6 +61,7 @@ library
                     , directory
                     , fast-logger
                     , filepath
+                    , file-embed
                     , ki
                     , lens
                     , lens-aeson
@@ -67,6 +69,7 @@ library
                     , time
                     , mtl
                     , random
+                    , random-shuffle
                     , safe-exceptions
                     , sqlite-simple
                     , stm
