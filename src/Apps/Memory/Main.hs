@@ -35,7 +35,7 @@ memoryApp = do
             AppState
               { collectionName,
                 board,
-                gameState = Play Wait,
+                gameState = Play $ Progress NoCardTurned,
                 cardsToRender = mempty
               },
         appInitDB = initDB,
@@ -61,6 +61,19 @@ handleEvent cols (WSEvent wseName _ wseData) appStateV _serviceQ _dbConn logger 
             readTVar appStateV
           mapM (renderCard cols appStateV) appState.cardsToRender
         _ -> pure mempty
+    "clickRestart" -> do
+      (board, _) <- mkBoard cols
+      atomically $ do
+        modifyTVar appStateV $ \appState ->
+          appState
+            { board,
+              cardsToRender = mempty,
+              gameState = Play $ Progress NoCardTurned
+            }
+      boardHtml <- renderBoard cols appStateV
+      pure [boardHtml]
+    "clickMenu" -> do
+      pure []
     _ -> pure mempty
   where
     handleCardClick :: CardId -> AppState -> AppState
@@ -129,8 +142,9 @@ renderApp cols appStateV _logger _dbConn = do
     div_ [id_ "AppMain", class_ "flex flex-row justify-center"] $ do
       div_ [class_ "grow min-w-min max-w-screen-2xl"] $ do
         div_ [class_ "flex-col justify-between h-full"] $ do
-          div_ [class_ "bg-indigo-100"] $ do
-            p_ $ toHtml appState.collectionName
+          div_ [class_ "flex justify-around m-1"] $ do
+            button "clickButton" "Menu"
+            button "clickRestart" "Restart"
           case appState.gameState of
             Play _ -> do
               div_ [class_ ""] $ do
@@ -139,24 +153,32 @@ renderApp cols appStateV _logger _dbConn = do
             _ -> p_ "Menu"
           div_ [class_ "bg-indigo-100"] $ do
             p_ "Footer"
+  where
+    button :: T.Text -> T.Text -> Html ()
+    button evText text =
+      withEvent evText []
+        $ div_
+          [ class_
+              "px-1 cursor-pointer border-2 rounded border-gray-200 whitespace-nowrap"
+          ]
+        $ toHtml text
 
 renderBoard :: SVGCollections -> TVar AppState -> IO (Html ())
 renderBoard cols appStateV = do
   cards <- mapM (renderCard cols appStateV) [0 .. 23]
   pure $ div_ [id_ "Board", class_ "flex flex-row flex-wrap"] $ do
     div_ [class_ "basis-1/2 min-w-fit grow bg-green-400"] $ do
-      div_ [class_ "m-2 grid grid-flow-row-dense gap-2 grid-cols-6 grid-rows-3"] $ do
+      div_ [class_ "m-2 grid grid-flow-row-dense gap-2 grid-cols-6 grid-rows-3 justify-items-center"] $ do
         sequence_ cards
 
 renderCard :: SVGCollections -> TVar AppState -> CardId -> IO (Html ())
 renderCard cols appStateV cardId = do
   appState <- readTVarIO appStateV
-  let cardIdHX = mkHxVals [("index", T.pack $ show cardId)]
-      cardDivId = from $ "Card" <> show cardId
-  pure $ div_ [id_ cardDivId] $ withEvent "clickCard" [cardIdHX] $ do
+  pure $ div_ [id_ cardDivId] $ do
     case getCardByCardId appState.board cardId of
       Card _ Closed -> div_ [class_ "cursor-pointer"] $ do
-        div_ [class_ boxes_style] ""
+        withEvent "clickCard" [cardIdHX] $
+          div_ [class_ boxes_style] ""
       Card _ Turned -> do
         div_ [class_ boxes_style] $ img_ [src_ $ getSVGInline appState]
       Card _ TurnedMatchSucc -> do
@@ -178,7 +200,9 @@ renderCard cols appStateV cardId = do
           svg = fromMaybe (error "no svg") $ getSVGByName cols appState.collectionName svgName
           svgB64 = B64.encode svg
        in "data:image/svg+xml;base64," <> from (unpack svgB64)
-    boxes_style = "w-14 lg:w-24 h-14 lg:h-24 shadow shadow-black bg-yellow-100 border-2 rounded border-pink-100"
+    boxes_style = "w-14 md:w-24 lg:w-32 h-14 md:h-24 lg:h-32 shadow shadow-black bg-yellow-100 border-2 rounded border-pink-100"
+    cardIdHX = mkHxVals [("index", T.pack $ show cardId)]
+    cardDivId = from $ "Card" <> show cardId
 
 renderLeaderBoard :: Html ()
 renderLeaderBoard = do
