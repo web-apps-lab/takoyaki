@@ -4,7 +4,7 @@
 
   inputs = {
     hspkgs.url =
-      "github:podenv/hspkgs/4a25962c7beede6cfcacc66000ef783e5c98e483";
+      "github:podenv/hspkgs/ba5d181089900f376f765e4a6889bd30c4f96993";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
