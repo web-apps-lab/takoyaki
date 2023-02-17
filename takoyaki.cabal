@@ -34,16 +34,9 @@ library
     import:           common-options
     exposed-modules:  Takoyaki.Htmx
                     , Takoyaki.Engine
-                    , Apps.Todo
                     , Apps.HazardHunter.Main
                     , Apps.HazardHunter.Engine
                     , Apps.HazardHunter.DB
-                    , Apps.Memory.Main
-                    , Apps.Memory.Engine
-                    , Apps.Memory.DB
-                    , Apps.Seed.Main
-                    , Apps.Seed.Engine
-                    , Apps.Seed.DB
     build-depends:    servant
                     , servant-lucid
                     , servant-server

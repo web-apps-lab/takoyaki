@@ -38,8 +38,6 @@ firefox http://127.0.0.1:8092
 nix develop
 
 # Start ghicd on the Module app you want to hack on
-ghcid -W -c 'cabal repl' -r="Apps.Seed.Main.run 8092"
-ghcid -W -c 'cabal repl' -r="Apps.Todo.run 8092"
 ghcid -W -c 'cabal repl' -r="Apps.HazardHunter.Main.run 8092"
 
 # Open the browser to get interactive feedback
