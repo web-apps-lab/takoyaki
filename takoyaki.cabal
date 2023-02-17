@@ -32,55 +32,8 @@ common common-options
 
 library
     import:           common-options
-    exposed-modules:  Takoyaki.Htmx
-                    , Takoyaki.Engine
-                    , Apps.HazardHunter.Main
-                    , Apps.HazardHunter.Engine
-                    , Apps.HazardHunter.DB
-    build-depends:    servant
-                    , servant-lucid
-                    , servant-server
-                    , servant-websockets
-                    , servant-xstatic
-                    , servant-auth-server
-                    , aeson
-                    , async
-                    , bytestring
-                    , base64-bytestring
-                    , containers
-                    , cookie
-                    , lucid
-                    , lucid-xstatic
-                    , directory
-                    , fast-logger
-                    , filepath
-                    , file-embed
-                    , ki
-                    , lens
-                    , lens-aeson
-                    , text
-                    , time
-                    , mtl
-                    , random
-                    , random-shuffle
-                    , safe-exceptions
-                    , sqlite-simple
-                    , stm
-                    , serialise
-                    , string-interpolate
-                    , hashable
-                    , http-api-data
-                    , unordered-containers
-                    , uuid
-                    , vector
-                    , wai
-                    , wai-logger
-                    , warp
-                    , websockets
-                    , witch
-                    , xstatic
-                    , xstatic-htmx
-                    , xstatic-tailwind
+    exposed-modules:  Apps.HazardHunter.Main
+    -- build-depends:    Butler
     hs-source-dirs:   src
 
 executable takoyaki
