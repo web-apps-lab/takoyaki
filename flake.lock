@@ -1,23 +1,46 @@
 {
   "nodes": {
-    "flake-utils": {
+    "butler": {
+      "inputs": {
+        "hspkgs": "hspkgs"
+      },
       "locked": {
-        "lastModified": 1676283394,
-        "narHash": "sha256-XX2f9c3iySLCw54rJ/CZs+ZK6IQy7GXNY4nSOyu2QG4=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "3db36a8b464d0c4532ba1c7dda728f4576d6d073",
+        "lastModified": 1676639842,
+        "narHash": "sha256-9Tow26utD+So6tbWdaq/HLdj6FaNz/BYXsaZlIyKmsU=",
+        "owner": "TristanCacqueray",
+        "repo": "haskell-butler",
+        "rev": "f955a3a59da27633f273f00c2dd26a519a749049",
         "type": "github"
       },
       "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
+        "owner": "TristanCacqueray",
+        "repo": "haskell-butler",
+        "rev": "f955a3a59da27633f273f00c2dd26a519a749049",
         "type": "github"
       }
     },
     "hspkgs": {
       "inputs": {
         "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1673896452,
+        "narHash": "sha256-IZhhr6iQqj7yaFz7pRzJxk2srDoNDRJk5z9jnrlZoao=",
+        "owner": "podenv",
+        "repo": "hspkgs",
+        "rev": "ba5d181089900f376f765e4a6889bd30c4f96993",
+        "type": "github"
+      },
+      "original": {
+        "owner": "podenv",
+        "repo": "hspkgs",
+        "rev": "ba5d181089900f376f765e4a6889bd30c4f96993",
+        "type": "github"
+      }
+    },
+    "hspkgs_2": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_2"
       },
       "locked": {
         "lastModified": 1673896452,
@@ -50,10 +73,26 @@
         "type": "github"
       }
     },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1672755833,
+        "narHash": "sha256-AmPzlvY1Y5codnytZCDn2wlhVa8rDHNib5wBWtcD7c4=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "3665c429d349fbda46b0651e554cca8434452748",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "3665c429d349fbda46b0651e554cca8434452748",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
-        "flake-utils": "flake-utils",
-        "hspkgs": "hspkgs"
+        "butler": "butler",
+        "hspkgs": "hspkgs_2"
       }
     }
   },

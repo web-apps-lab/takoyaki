@@ -1,7 +1,7 @@
 -- {-# HLINT ignore "Use if" #-}
 -- {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 
--- module Apps.HazardHunter.Main where
+module Apps.HazardHunter.Main where
 
 -- import Apps.HazardHunter.DB
 -- import Apps.HazardHunter.Engine
@@ -12,7 +12,7 @@
 -- import Data.Text (Text, intercalate, pack)
 -- import Data.Time (UTCTime, defaultTimeLocale, diffUTCTime, formatTime, getCurrentTime)
 -- import qualified Database.SQLite.Simple as DB
--- import qualified Ki
+import qualified Ki
 -- import Lucid
 -- import qualified Network.WebSockets as WS
 -- import Takoyaki.Engine
@@ -20,7 +20,7 @@
 -- import Text.Printf (printf)
 -- import Text.Read (readMaybe)
 -- import Witch
--- import Prelude
+import Prelude
 
 -- data ServiceEvent
 --   = StartTimer

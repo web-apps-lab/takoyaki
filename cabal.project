@@ -1,54 +1,7 @@
+
 packages: .
 
 source-repository-package
-  type: git
-  location: https://github.com/TristanCacqueray/haskell-butler.git
-  tag: f955a3a59da27633f273f00c2dd26a519a749049
-
-source-repository-package
  type: git
- location: https://github.com/TristanCacqueray/haskell-xstatic
- tag: b955d64f66484f3b173c66208caf130738c4cc02
- subdir: xstatic-xterm
-
-source-repository-package
-  type: git
-  location: https://github.com/TristanCacqueray/haskell-xstatic
-  tag: b955d64f66484f3b173c66208caf130738c4cc02
-  subdir: xstatic-winbox
-
-source-repository-package
-  type: git
-  location: https://github.com/TristanCacqueray/haskell-xstatic
-  tag: b955d64f66484f3b173c66208caf130738c4cc02
-  subdir: xstatic-sweetalert2
-
-source-repository-package
-  type: git
-  location: https://github.com/TristanCacqueray/haskell-xstatic
-  tag: b955d64f66484f3b173c66208caf130738c4cc02
-  subdir: xstatic-remixicon
-
-source-repository-package
-  type: git
-  location: https://github.com/TristanCacqueray/haskell-xstatic
-  tag: b955d64f66484f3b173c66208caf130738c4cc02
-  subdir: xstatic-pcm-player
-
-source-repository-package
-  type: git
-  location: https://github.com/TristanCacqueray/haskell-xstatic
-  tag: b955d64f66484f3b173c66208caf130738c4cc02
-  subdir: xstatic-novnc
-
-source-repository-package
-  type: git
-  location: https://github.com/TristanCacqueray/haskell-xstatic
-  tag: b955d64f66484f3b173c66208caf130738c4cc02
-  subdir: xstatic-tailwind
-
-source-repository-package
-  type: git
-  location: https://github.com/TristanCacqueray/haskell-xstatic
-  tag: b955d64f66484f3b173c66208caf130738c4cc02
-  subdir: xstatic-htmx
+ location: https://github.com/TristanCacqueray/haskell-butler
+ tag: f955a3a59da27633f273f00c2dd26a519a749049

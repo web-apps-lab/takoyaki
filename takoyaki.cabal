@@ -33,7 +33,7 @@ common common-options
 library
     import:           common-options
     exposed-modules:  Apps.HazardHunter.Main
-    -- build-depends:    Butler
+    build-depends:    butler
     hs-source-dirs:   src
 
 executable takoyaki
