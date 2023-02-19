@@ -62,7 +62,7 @@
       "github:podenv/hspkgs/ba5d181089900f376f765e4a6889bd30c4f96993";
     # "path:///srv/github.com/podenv/hspkgs";
     butler.url =
-      "github:TristanCacqueray/haskell-butler/f955a3a59da27633f273f00c2dd26a519a749049";
+      "github:TristanCacqueray/haskell-butler/c0b75e7825dda37e50568fceda7852629fa2a98f";
   };
   outputs = { self, hspkgs, butler }:
     let
